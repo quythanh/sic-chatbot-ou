@@ -1,0 +1,50 @@
+.wSidebar {
+    width: 50px; /* Thiết lập kích thước cố định */
+  background-color: #dbe4e3;
+  }
+  .custom-link {
+    color: inherit;
+    text-decoration: none;
+}
+/**  STYLE 4 */
+.scrollbarHidden::-webkit-scrollbar {
+  overflow: auto;
+  width: 1px; /* Độ rộng của thanh cuộn */
+  height: 1px; /* Chiều cao của thanh cuộn */
+}
+.scrollbarHidden::-webkit-scrollbar-thumb {
+  background-color: #e8dfdf;
+  border: 2px solid #f5eded;
+}
+/* .scrollbarHidden{
+  background-color: aqua;
+} */
+
+/* Màu xám đậm: #333333 hoặc #666666
+Màu xám trung bình: #999999 hoặc #CCCCCC
+Màu xám nhạt: #E0E0E0 hoặc #F2F2F2 */
+
+.changeBg:hover{
+  background-color: rgb(221, 218, 218);
+
+}
+
+.sfe{
+  background-color: #383838e8;
+}
+
+.card {
+  width: 400px;
+}
+
+@media (max-width: 500px) {
+  .card {
+    width: 350px;
+  }
+}
+
+.disabled-div {
+  pointer-events: none; /* Làm cho div không phản hồi đối với các sự kiện chuột */
+  user-select: none; /* Ngăn chặn việc chọn nội dung trong div */
+  opacity: 0.5;
+}
