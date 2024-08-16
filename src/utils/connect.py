@@ -1,13 +1,14 @@
+import os
 import mysql.connector
 
 # Kết nối đến cơ sở dữ liệu MySQL
 def connect_to_database():
     return mysql.connector.connect(
-        host="localhost",
-        port=3306,
-        user="testuser",
-        password="Admin@123",
-        database="chatbot2024",
+        host=os.environ["DB_HOST"],
+        port=os.environ["DB_PORT"],
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASSWORD"],
+        database=os.environ["DB_NAME"],
         charset="utf8mb4",
         collation="utf8mb4_general_ci",
     )

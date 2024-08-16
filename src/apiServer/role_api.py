@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from src.data.connect import connect_to_database
+from src.utils.connect import connect_to_database
 
 connection = connect_to_database()
 role_blueprint = Blueprint('roles', __name__, url_prefix="/roles")

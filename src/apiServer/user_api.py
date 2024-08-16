@@ -1,6 +1,6 @@
 # user_api.py
 from flask import Blueprint, request, jsonify
-from src.data.connect import connect_to_database
+from src.utils.connect import connect_to_database
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 user_blueprint = Blueprint('user', __name__)

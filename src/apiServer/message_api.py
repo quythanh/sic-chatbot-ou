@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from src.data.connect import connect_to_database
+from src.utils.connect import connect_to_database
 
 
 message_blueprint = Blueprint('messages', __name__, url_prefix="/messages")
