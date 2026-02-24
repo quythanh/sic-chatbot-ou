@@ -7,6 +7,7 @@ connection = connect_to_database()
 
 @message_blueprint.route('/', methods=['POST'])
 def add_message():
+    connection = connect_to_database()
     if connection:
         data = request.json
         session_id = data['session_id']
@@ -24,6 +25,7 @@ def add_message():
         cursor.execute(sql, values)
         connection.commit()
         cursor.close()
+        connection.close()
 
         # Lấy qa_id của phần tử vừa thêm
         qa_id = cursor.lastrowid
@@ -37,23 +39,27 @@ def add_message():
 # Lấy thông tin tất cả các tin nhắn
 @message_blueprint.route('/', methods=['GET'])
 def get_all_messages():
+    connection = connect_to_database()
     if connection:
         cursor = connection.cursor(dictionary=True)
         cursor.execute("SELECT * FROM message")
         messages = cursor.fetchall()
         cursor.close()
+        connection.close()
         return jsonify(messages), 200
     else:
         return jsonify({"error": "Failed to connect to database"}), 500
 
 @message_blueprint.route('/<int:messages_id>', methods=['GET'])
 def get_session(messages_id):
+    connection = connect_to_database()
     if connection:
         cursor = connection.cursor(dictionary=True)
         sql = "SELECT * FROM message WHERE messages_id = %s"
         cursor.execute(sql, (messages_id,))
         messages = cursor.fetchone()
         cursor.close()
+        connection.close()
         if messages:
             return jsonify(messages), 200
         else:
@@ -64,6 +70,7 @@ def get_session(messages_id):
 # Cập nhật thông tin của một tin nhắn
 @message_blueprint.route('/<int:qa_id>', methods=['PUT'])
 def update_message(qa_id):
+    connection = connect_to_database()
     if connection:
         data = request.json
         session_id = data['session_id']
@@ -81,6 +88,7 @@ def update_message(qa_id):
         cursor.execute(sql, values)
         connection.commit()
         cursor.close()
+        connection.close()
         return jsonify({"message": "Message updated successfully"}), 200
     else:
         return jsonify({"error": "Failed to connect to database"}), 500
@@ -88,6 +96,7 @@ def update_message(qa_id):
 # Xóa một tin nhắn
 @message_blueprint.route('/<int:qa_id>', methods=['DELETE'])
 def delete_message(qa_id):
+    connection = connect_to_database()
     if connection:
         cursor = connection.cursor()
         sql = "DELETE FROM message WHERE qa_id=%s"
@@ -95,6 +104,7 @@ def delete_message(qa_id):
         cursor.execute(sql, values)
         connection.commit()
         cursor.close()
+        connection.close()
         return jsonify({"message": "Message deleted successfully"}), 200
     else:
         return jsonify({"error": "Failed to connect to database"}), 500
@@ -102,12 +112,14 @@ def delete_message(qa_id):
 # Lấy thông tin tất cả session của một user dựa trên session_id
 @message_blueprint.route('/session/<int:session_id>', methods=['GET'])
 def get_sessions_by_user_id(session_id):
+    connection = connect_to_database()
     if connection:
         cursor = connection.cursor(dictionary=True)
         sql = "SELECT * FROM message WHERE session_id = %s ORDER BY qa_id"
         cursor.execute(sql, (session_id,))
         sessions = cursor.fetchall()
         cursor.close()
+        connection.close()
         return jsonify(sessions), 200
     else:
         return jsonify({"error": "Failed to connect to database"}), 500

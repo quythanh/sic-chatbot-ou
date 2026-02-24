@@ -69,7 +69,9 @@ def add_user():
         values = (username, password, full_name, email, status, img, role_id)
         cursor.execute(sql, values)
         connection.commit()
+        cursor.close()
 
+        cursor = connection.cursor()
         # Truy vấn lại cơ sở dữ liệu để lấy thông tin của người dùng vừa được thêm
         cursor.execute("SELECT * FROM user WHERE username = %s", (username,))
         user = cursor.fetchone()
