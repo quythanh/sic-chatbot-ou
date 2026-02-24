@@ -1,0 +1,20 @@
+#!/bin/bash
+
+git clone https://github.com/quythanh/sic-chatbot-ou.git --single-branch --branch frontend --depth 1 frontend
+git clone https://github.com/quythanh/sic-chatbot-ou.git --single-branch --branch backend --depth 1 backend
+git clone https://github.com/quythanh/sic-chatbot-ou.git --single-branch --branch backend-bot --depth 1 backend-bot
+
+mkdir -p mariadb
+touch backend/.env
+touch backend-bot/.env
+
+echo "SERVER_HOST=0.0.0.0
+SERVER_PORT=5000
+DB_HOST=mariadb
+DB_PORT=3306
+DB_NAME=sic_chatbot
+DB_USER=root
+DB_PASSWORD=root" >backend/.env
+
+echo "SERVER_HOST=0.0.0.0
+SERVER_PORT=5001" >backend-bot/.env

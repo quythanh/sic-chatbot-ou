@@ -1,0 +1,58 @@
+services:
+  mariadb:
+    container_name: sic-chatbot-ou-db
+    image: mariadb:11.3.2-jammy
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sic_chatbot
+    volumes:
+      - ./mariadb:/var/lib/mysql
+      - ./backend/src/data:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+
+  server:
+    container_name: sic-chatbot-ou-app
+    image: quythanh/sic-chatbot-ou-app:1.0.0
+    depends_on:
+      - mariadb
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - 5000:5000
+    volumes:
+      - ./backend:/app
+
+  bot:
+    container_name: sic-chatbot-ou-bot
+    image: quythanh/sic-chatbot-ou-bot:1.0.0
+    build:
+      context: ./backend-bot
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend-bot/.env
+    ports:
+      - 5001:5001
+    volumes:
+      - ./backend-bot:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+            - count: all
+            - capabilities: [gpu]
+
+  ui:
+    container_name: sic-chatbot-ou-ui
+    image: quythanh/sic-chatbot-ou-ui:1.0.0
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
