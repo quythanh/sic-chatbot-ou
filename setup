@@ -1,8 +1,8 @@
 #!/bin/bash
 
-git clone https://github.com/quythanh/sic-chatbot-ou.git --single-branch --branch frontend --depth 1 frontend
-git clone https://github.com/quythanh/sic-chatbot-ou.git --single-branch --branch backend --depth 1 backend
-git clone https://github.com/quythanh/sic-chatbot-ou.git --single-branch --branch backend-bot --depth 1 backend-bot
+git clone git@github.com:quythanh/sic-chatbot-ou.git --single-branch --branch frontend --depth 1 frontend
+git clone git@github.com:quythanh/sic-chatbot-ou.git --single-branch --branch backend --depth 1 backend
+git clone git@github.com:quythanh/sic-chatbot-ou.git --single-branch --branch backend-bot --depth 1 backend-bot
 
 mkdir -p mariadb
 touch backend/.env
