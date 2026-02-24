@@ -84,7 +84,7 @@ export const login = async (userData: any) => {
 
 export const createUser = async (userData: any) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/users`, {
+        const response = await fetch(`${API_BASE_URL}/users/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -120,7 +120,6 @@ export const get_token_info = async (token: any) => {
         }
 
         const user = await response.json();
-        // console.log(response);
         return user;
     } catch (error) {
         console.error('Error:', error as Error);
@@ -232,19 +231,9 @@ export const updateUser = async (data: IUser) => {
     }
 };
 
-// UPDATE user
-// SET username='john_doe edit',
-//     password='password123',
-//     full_name='John Doe',
-//     email='john@example.com',
-//     status=1,
-//     img='https://th.bing.com/th/id/OIP.Iy0tmJanZeN5ceMP5uToLQAAAA?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet',
-//     role_id=1
-// WHERE user_id=2;
-
 export const createSession = async (data: any) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/sessions`, {
+        const response = await fetch(`${API_BASE_URL}/sessions/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -252,11 +241,14 @@ export const createSession = async (data: any) => {
             body: JSON.stringify(data),
         });
 
+        console.log(response);
+
         if (!response.ok) {
             throw new Error('Failed to create session');
         }
 
         const session = await response.json(); // Đợi cho response.json() hoàn thành
+        console.log('session: ', session);
 
         return session['session_id']; // Đảm bảo bạn đã đóng dấu nháy và thêm await ở trước response.json()
     } catch (error) {
@@ -267,7 +259,7 @@ export const createSession = async (data: any) => {
 
 export const getAllSession = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/sessions`, {
+        const response = await fetch(`${API_BASE_URL}/sessions/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -340,7 +332,6 @@ export const getAllSessionUser = async (user_id: number) => {
 
         const sessions: model1.Session[] = await response.json();
 
-        console.log(sessions);
         return sessions.map((session) => {
             session.start_time = parseDate(session.start_time);
             return session;
@@ -382,7 +373,7 @@ export const createMessage = async (message: model1.Message) => {
         if (!response.ok) {
             throw new Error('Failed to message');
         }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
+
         return response.json();
     } catch (error) {
         console.error('Error:', error as Error);
@@ -401,7 +392,7 @@ export const getAllMessageSession = async (session_id: number) => {
         if (!response.ok) {
             throw new Error('Failed to login');
         }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
+
         return response.json();
     } catch (error) {
         console.error('Error:', error as Error);
@@ -554,7 +545,7 @@ export const updateChatWithEmloyee = async (chat_employee: model1.ChatWithEmloye
 
 export const getAllUser = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/users`, {
+        const response = await fetch(`${API_BASE_URL}/users/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -563,305 +554,6 @@ export const getAllUser = async () => {
 
         if (!response.ok) {
             throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const createDataScore = async (message: model1.DataScore) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/data_scores`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(message),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to message');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllDataScore = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/data_scores`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getScoreByYear = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/objects_by_year`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getGPAScoreByYear = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/objects_and_average_score_by_year`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        // year_data = {'year': year, 'objects': objects}
-        // year_data['average_score'] = average_scores.get(year, 0)
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const createSubjectCombination = async (message: model1.SubjectCombination) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/subject_combinations`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(message),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to message');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const createAdmissionSubject = async (message: model1.AdmissionSubject) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/admission_subjects`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(message),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to message');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllSubjectCombination = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/subject_combinations`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        // console.log(response.json)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllAdmissionSubject = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/admission_subjects`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        // console.log(response.json)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const createSubjectCombinationVsAdmissionSubject = async (
-    message: model1.SubjectCombinationVsAdmissionSubject,
-) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/subject_combination_vs_admission_subjects`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(message),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to message');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllSubjectCombinationVsAdmissionSubject = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/subject_combination_vs_admission_subjects`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        // console.log(response.json)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllSubjectCombinationVsAdmissionSubjectGroup = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/subject_combination_vs_admission_subjects_group`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        // console.log(response.json)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllDataScoreVsSubjectCombination = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/data_score_vs_subject_combinations`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to login');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        // console.log(response.json)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const createDataScoreVsSubjectCombination = async (message: model1.DataScoreVsSubjectCombination) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/data_score_vs_subject_combinations`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(message),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to message');
-        }
-        //  mutate(`${API_BASE_URL}/sessions/${session.session_id}`)
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const get_data_score_and_combination_by_year = async (year: number) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/data_score_and_combination_by_year?year=${year}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch data');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const update_data_score = async (id_score: number, score: model1.DataScore) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/data_scores/${id_score}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(score),
-        });
-        console.log('score', score);
-        if (!response.ok) {
-            throw new Error('Failed to update data');
         }
 
         return response.json();
@@ -964,134 +656,6 @@ export const get_number_chat = async () => {
 export const get_number_chat_user = async (user_id: number) => {
     try {
         const response = await fetch(`${API_BASE_URL}/users/numberChat/${user_id}`, {
-            method: 'GET',
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to get new pages');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-        return [];
-    }
-};
-
-export const createBugQuestion = async (data: model1.BugQuestion) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_questions`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to create bug_questions');
-        }
-        mutate(`${API_BASE_URL}/bug_questions`);
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllBugQuestion = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_questions`, {
-            method: 'GET',
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to get new pages');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-        return [];
-    }
-};
-
-export const getBugQuestion = async (id: number) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_questions/${id}`, {
-            method: 'GET',
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to get new pages');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-        return [];
-    }
-};
-
-export const updateBugQuestion = async (bugQuestion: model1.BugQuestion) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_questions/${bugQuestion.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(bugQuestion),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update bugQuestion');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const createBugComment = async (data: model1.BugComment) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_comments`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to create bug_questions');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-    }
-};
-
-export const getAllBugComment = async () => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_comments`, {
-            method: 'GET',
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to get new pages');
-        }
-
-        return response.json();
-    } catch (error) {
-        console.error('Error:', error as Error);
-        return [];
-    }
-};
-
-export const getAllBugCommentByBugId = async (id: number) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/bug_comments/question/${id}`, {
             method: 'GET',
         });
 

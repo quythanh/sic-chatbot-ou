@@ -1,6 +1,6 @@
 'use client';
 
-import type { Message, Session, setValueModel } from '@/models/all';
+import type { Message, Session } from '@/models/all';
 import { useState, useEffect, useContext } from 'react';
 import SideBar from '@/components/sidebar';
 import MainChat from '@/components/main-chat';
@@ -174,7 +174,6 @@ function ChatPage(prop: any) {
                                         textAlign: 'left',
                                         marginLeft: '0',
                                         marginRight: '10px',
-
                                         position: showSideBar ? 'initial' : 'absolute',
                                         left: '19px',
                                         top: '5px',

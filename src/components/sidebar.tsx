@@ -1,6 +1,6 @@
 'use client';
 import type IUser from '@/models/user';
-import type * as model1 from '@/models/all';
+import type { ChatWithEmloyee, Session } from '@/models/all';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -18,21 +18,22 @@ import getDate from '@/utils/date';
 // Định nghĩa kiểu dữ liệu cho các sự kiện
 interface MyEvents {
     valueChange?: [(newValue: string) => void];
-    [key: string]: any; // Index signature cho kiểu string
+    [key: string]: any;
     changeSession: () => void;
     showEmloyeeMessager: () => void;
     renderSideBar: boolean;
 }
 
-interface chat_employee extends model1.ChatWithEmloyee {
+interface chat_employee extends ChatWithEmloyee {
     announcement?: number;
     announcement_user?: number;
 }
+
 const SideBar = (
     { changeSession, showEmloyeeMessager, renderSideBar, saveOldSessions, oldSessions }: MyEvents,
     props: any,
 ) => {
-    const [sessions, setSessions] = useState<model1.Session[]>(saveOldSessions);
+    const [sessions, setSessions] = useState<Session[]>(saveOldSessions);
     const [isMounted, setIsMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [userL, setUserL] = useState<IUser>(props.user);
@@ -72,7 +73,6 @@ const SideBar = (
                 get_number_chat_user(user.user_id as number);
                 if (user && 'user_id' in user) {
                     const arrSession = await api.getAllSessionUser(user['user_id'] as number);
-                    console.log(arrSession);
 
                     setSessions(arrSession);
                     if (arrSession.length !== 0) {
@@ -115,7 +115,6 @@ const SideBar = (
 
     const createSession = async () => {
         try {
-            // console.log(22324)
             setIsLoading(true);
             let user;
             if (userL) {
@@ -132,7 +131,7 @@ const SideBar = (
                 if ('user_id' in user) {
                     // console.log("user_id", user["user_id"]);
                     const newDate = getDate();
-                    const session: model1.Session = {
+                    const session: Session = {
                         name: `session ${newDate}`,
                         start_time: newDate,
                         end_time: newDate,
@@ -151,11 +150,10 @@ const SideBar = (
         setIsLoading(false);
     };
 
-    const updateSession = async (session: model1.Session) => {
+    const updateSession = async (session: Session) => {
         setIsLoading(true);
         try {
             const s = await api.updateSession(session);
-            // console.log("put", session);
             setIsLoading(false);
             return s;
         } catch (error) {
@@ -165,7 +163,7 @@ const SideBar = (
         }
     };
 
-    const deleteSession = async (session: model1.Session) => {
+    const deleteSession = async (session: Session) => {
         await api.deleteSession(session.session_id as number);
         if (session.session_id === sessions[0].session_id) {
             if (sessions[1]) router.push(`/chat-page/${sessions[1].session_id}`);
@@ -174,7 +172,7 @@ const SideBar = (
         setSessions((prevSessions) => prevSessions.filter((s) => s.session_id !== session.session_id));
     };
 
-    const handleSelectSession = async (session: model1.Session) => {
+    const handleSelectSession = async (session: Session) => {
         setIsLoading(true);
         session.end_time = getDate();
         try {
@@ -237,7 +235,7 @@ const SideBar = (
 
                             <div className="m-3" />
 
-                            {sessions?.map((session: model1.Session, index: number) => (
+                            {sessions?.map((session: Session, index: number) => (
                                 <NewSession
                                     key={session.session_id}
                                     status={!index}

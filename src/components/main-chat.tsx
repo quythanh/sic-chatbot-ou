@@ -99,8 +99,8 @@ const MainChat = ({ messages, getValueS }: IMessages) => {
                 (!messages || !messages.length ? (
                     <EmptyChatView />
                 ) : (
-                    messages?.map((message: model1.Message) => (
-                        <Fragment key={`chat_${hash(message.answer)}`}>
+                    messages?.map((message: model1.Message, idx) => (
+                        <Fragment key={`chat_${idx}`}>
                             <Chatbox
                                 owner={dataMainChat.user!}
                                 messenger={message.question}
